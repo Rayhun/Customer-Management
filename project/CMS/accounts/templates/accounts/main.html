@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        .card-title{
+            color: #ffff;
+            padding-top: 10px;
+        }
+        #logo{
+
+        }
+        body{
+            background-color: #ebeff5;
+        }
+
+        #total-orders{
+            background-color: #4cb4c7;
+        }
+        #order-delevered{
+            background-color: #7abecc;
+        }
+        #order-rending{
+            background-color: #7CD1C0;
+        }
+
+    </style>
+</head>
+<body>
+    {% include 'accounts/navbar.html' %}
+    {% block content %}
+    
+    {% endblock %}
+    <hr>
+
+
+    <h5>Our footer</h5>
+</body>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</html>
