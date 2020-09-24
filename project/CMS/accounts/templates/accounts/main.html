@@ -1,33 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CMS</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <style>
-        .card-title{
-            color: #ffff;
-            padding-top: 10px;
-        }
-        #logo{
-
-        }
-        body{
-            background-color: #ebeff5;
-        }
-
-        #total-orders{
-            background-color: #4cb4c7;
-        }
-        #order-delevered{
-            background-color: #7abecc;
-        }
-        #order-rending{
-            background-color: #7CD1C0;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static '/css/main.css' %}">
 </head>
 <body>
     {% include 'accounts/navbar.html' %}
