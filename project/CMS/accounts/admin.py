@@ -6,4 +6,9 @@ from .models import *
 admin.site.register(Customer)
 admin.site.register(Product)
 admin.site.register(Tag)
-admin.site.register(Order)
+
+class OrderMoelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'customer','Product','date_created','statur')
+
+admin.site.register(Order, OrderMoelAdmin)
+

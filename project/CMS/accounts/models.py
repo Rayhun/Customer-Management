@@ -38,7 +38,7 @@ class Product(models.Model):
 class Order(models.Model):
     STATUS = (
         ('pending','pending'),
-        ('Out for Delevery','Out for Delevery'),
+        ('out_for_delevery','out_for_delevery'),
         ('Delivered','Delivered')
         )
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
@@ -47,4 +47,4 @@ class Order(models.Model):
     statur = models.CharField(max_length=200, null=True, choices=STATUS)
 
     def __str__(self):
-        return self.customer
+        return str(self.customer)
