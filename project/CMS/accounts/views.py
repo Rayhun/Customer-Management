@@ -10,8 +10,8 @@ def home(request):
     total_customers = customers.count()
     total_orders = orders.count()
     order_delivered = orders.filter(statur='Delivered').count()
-    order_pending = orders.filter(statur='pending').count()
-    order_cancels = orders.filter(statur='out_for_delevery').count()
+    order_pending = orders.filter(statur='Pending').count()
+    order_cancels = orders.filter(statur='out for delevery').count()
     context = {
         'orders':orders,
         'customers':customers,
@@ -32,5 +32,12 @@ def products(request):
     return render(request, 'accounts/product.html', context)
 
 def customer(request, pk):
-    cusromer = Customer.objects.get(pk=pk)
-    return render(request, 'accounts/customer.html')
+    customer = Customer.objects.get(pk=pk)
+    orders = customer.order_set.all()
+    orders_count = orders.count()
+    context = {
+        'customer':customer,
+        'orders':orders,
+        'orders_count':orders_count
+    }
+    return render(request, 'accounts/customer.html',context)

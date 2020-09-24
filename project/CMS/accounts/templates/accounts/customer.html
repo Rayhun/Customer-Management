@@ -16,15 +16,15 @@
             <div class="card card-body">
                 <h5>Contact Information</h5>
                 <hr>
-                <p>Email: </p>
-                <p>Phone: </p>
+                <p>Email: {{ customer.email }}</p>
+                <p>Phone: {{ customer.phone }}</p>
             </div>
         </div>
         <div class="col-md">
             <div class="card card-body">
                 <h5>Total Orders</h5>
                 <hr>
-                <h1 style="text-align: center; padding:10px"></h1>
+                <h1 style="text-align: center; padding:10px">{{ orders_count  }}</h1>
             </div>
         </div>
     </div>
@@ -42,13 +42,23 @@
             <div class="card card-body">
                 <table class="table table-sm">
                     <tr>
-                        <td>Product</td>
-                        <td>Categoary</td>
-                        <td>Data Orderd</td>
-                        <td>Status</td>
-                        <td>Update</td>
-                        <td>Remove</td>
+                        <th>Product</th>
+                        <th>Categoary</th>
+                        <th>Data Orderd</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Remove</th>
                     </tr>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{ order.Product }}</td>
+                        <td>{{ order.Product.catagory }}</td>
+                        <td>{{ order.date_created }}</td>
+                        <td>{{ order.statur }}</td>
+                        <td><a class="btn btn-primary" href="#">Update</a></td>
+                        <td><a class="btn btn-danger" href="#">Remove</a></td>
+                    </tr>
+                    {% endfor %}
             </table>
             </div>
         </div>
