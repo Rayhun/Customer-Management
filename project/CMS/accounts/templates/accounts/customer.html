@@ -55,8 +55,8 @@
                         <td>{{ order.Product.catagory }}</td>
                         <td>{{ order.date_created }}</td>
                         <td>{{ order.statur }}</td>
-                        <td><a class="btn btn-primary" href="#">Update</a></td>
-                        <td><a class="btn btn-danger" href="#">Remove</a></td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.pk %}">Update</a></td>
+                        <td><a class="btn btn-danger" href="{% url 'delete_order' order.pk %}">Delete</a></td>
                     </tr>
                     {% endfor %}
             </table>
