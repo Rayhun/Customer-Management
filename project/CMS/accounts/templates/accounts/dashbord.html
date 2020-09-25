@@ -20,6 +20,7 @@
                 <tr>
                     <td>{{ customer.name }}</td>
                     <td>{{ customer.phone }}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.pk %}">View</a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -29,7 +30,7 @@
         <h5 class="text-center">LAST 5 ORDERS:</h5>
         <hr>
         <div class="card card-body">
-            <a class="btn btn-primary btn-sm btn-block" href="">Creat Order</a>
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_order' %}">Creat Order</a>
             <table class="table table-sm">
                 <tr>
                     <th>Product</th>
@@ -43,7 +44,7 @@
                     <td>{{ order.Product }}</td>
                     <td>{{ order.date_created }}</td>
                     <td>{{ order.statur }}</td>
-                    <td><a class="btn btn-primary" href="#">Update</a></td>
+                    <td><a class="btn btn-sm btn-info" href="#">Update</a></td>
                     <td><a class="btn btn-danger" href="#">Delete</a></td>
                 </tr>
                 {% endfor %}
