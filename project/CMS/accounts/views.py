@@ -31,7 +31,7 @@ def home(request):
 def products(request):
     product = Product.objects.all()
     context = {
-        'product': product
+        'products': product
     }
     return render(request, 'accounts/product.html', context)
 
@@ -41,7 +41,7 @@ def customer(request, pk):
     orders_count = orders.count()
 
     myFilter = OrderFilter(request.GET, queryset=orders)
-    orders = myFilter.qs 
+    orders = myFilter.qs
 
     context = {
         'customer':customer,
@@ -53,7 +53,7 @@ def customer(request, pk):
 
 
 def createOrder(request, pk): 
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product','statur'))
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product','statur','note'))
     customer = Customer.objects.get(pk=pk)
     formset= OrderFormSet(instance=customer)
     # form = OrderForm(initial={'customer':customer})
@@ -68,13 +68,13 @@ def createOrder(request, pk):
 
 def updateOrder(request, pk):
     order = Order.objects.get(pk=pk)
-    form = OrderForm(instance=order)
+    formset = OrderForm(instance=order)
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
-            form.save()
+        formset = OrderForm(request.POST, instance=order)
+        if formset.is_valid():
+            formset.save()
             return redirect('/')
-    context = {'form':form}
+    context = {'formset':formset}
     return render(request, 'accounts/order_form.html', context)
 
 def deleteOrder(request, pk):
