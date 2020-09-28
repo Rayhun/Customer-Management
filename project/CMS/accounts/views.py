@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import inlineformset_factory
 from django.contrib import messages
-
+from django.contrib.auth import authenticate,login,logout
+from django.forms import ValidationError
+from django.contrib.auth.models import User
 
 # Create your views here.
 from .models import *
@@ -12,21 +14,38 @@ from .filter import OrderFilter
 
 
 def registerPage(request):
-    form = CreateUserForm()
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, user + ' Account create successful')
-            return redirect('login')  
-
+    form = CreateUserForm(request.POST or None)
     context = {
         'form':form
     }
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST or None)
+        if form.is_valid():
+            userform = form.save(commit=False)
+            user = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            qs = User.objects.filter(email=email)
+            if qs.exists():
+                messages.error(request, 'Email Already Exists')
+                return redirect('register')
+            else:
+                userform.save()
+                messages.success(request, user + ' Account create successful')
+                return redirect('login')
     return render(request, 'accounts/register.html', context)
 
 def loginPage(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.warning(request, 'username or password dos\'t match')
+
     context = {}
     return render(request, 'accounts/login.html', context)
 
