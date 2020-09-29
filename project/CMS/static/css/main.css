@@ -1,0 +1,56 @@
+.card-title{
+    color: #ffff;
+    padding-top: 10px;
+}
+#logo{
+    height: 50PX;
+
+}
+body{
+    background-color: #ebeff5;
+}
+#total-orders{
+    background-color: #4cb4c7;
+}
+#order-delevered{
+    background-color: #7abecc;
+}
+#order-rending{
+    background-color: #7CD1C0;
+}
+.product{
+    font-size: 36px;
+    text-transform: uppercase;
+}
+.product .p{
+    color: red;
+}
+.product .r{
+    color: rgb(100, 52, 52);
+}
+.product .o{
+    color: rgb(100, 152, 52);
+}
+.product .d{
+    color: rgb(52, 70, 152);
+}
+.product .u{
+    color: rgb(146, 224, 19);
+}
+.product .c{
+    color: rgb(134, 134, 31);
+}
+.product .t{
+    color: rgb(134, 31, 94);
+}
+.product .s{
+    color: rgb(5, 9, 230);
+}
+/* .product .p:hover{
+    color: green;
+    margin-top: 0px;
+} */
+/* .product .r:hover{
+    color: rgb(68, 236, 68);
+    margin-top: 0px;
+} */
