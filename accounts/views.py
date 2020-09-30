@@ -2,29 +2,66 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import inlineformset_factory
+from django.contrib import messages
+from django.forms import ValidationError
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login,logout
+
 # Create your views here.
 from .models import *
-from .form import OrderForm, CreateUserForm
 from .filter import OrderFilter
+from .form import OrderForm, CreateUserForm
+from .decorators import unauthenticated_user, allowed_user, admin_only
 
-
+@unauthenticated_user
 def registerPage(request):
-    form = CreateUserForm()
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid:
-            form.save()
-
+    form = CreateUserForm(request.POST or None)
     context = {
         'form':form
     }
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST or None)
+        if form.is_valid():
+            userform = form.save(commit=False)
+            user = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            qs = User.objects.filter(email=email)
+            if qs.exists():
+                messages.error(request, 'Email Already Exists')
+                return redirect('register')
+            else:
+                userform.save()
+                messages.success(request, user + ' Account create successful')
+                return redirect('login')
     return render(request, 'accounts/register.html', context)
 
+
+@unauthenticated_user
 def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.warning(request, 'username or password dos\'t match')
     context = {}
     return render(request, 'accounts/login.html', context)
 
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
+
+def userProfile(request):
+    context = {}
+    return render(request, 'accounts/user.html', context)
+
+@login_required(login_url='login')
+@admin_only
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -45,6 +82,7 @@ def home(request):
 
     return render(request, 'accounts/dashbord.html',context)
 
+@login_required(login_url='login')
 def products(request):
     product = Product.objects.all()
     context = {
@@ -52,6 +90,8 @@ def products(request):
     }
     return render(request, 'accounts/product.html', context)
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     orders = customer.order_set.all()
@@ -69,6 +109,8 @@ def customer(request, pk):
     return render(request, 'accounts/customer.html',context)
 
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def createOrder(request, pk): 
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product','statur','note'))
     customer = Customer.objects.get(pk=pk)
@@ -83,6 +125,8 @@ def createOrder(request, pk):
     context = {'formset':formset}
     return render(request, 'accounts/order_form.html', context)
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def updateOrder(request, pk):
     order = Order.objects.get(pk=pk)
     formset = OrderForm(instance=order)
@@ -94,6 +138,8 @@ def updateOrder(request, pk):
     context = {'formset':formset}
     return render(request, 'accounts/order_form.html', context)
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def deleteOrder(request, pk):
     order = Order.objects.get(pk=pk)
     if request.method == "POST":
