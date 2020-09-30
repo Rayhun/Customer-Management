@@ -12,7 +12,7 @@ from django.contrib.auth.models import Group
 # Create your views here.
 from .models import *
 from .filter import OrderFilter
-from .form import OrderForm, CreateUserForm
+from .form import OrderForm, CreateUserForm,CustomerForm
 from .decorators import unauthenticated_user, allowed_user, admin_only
 
 @unauthenticated_user
@@ -82,6 +82,20 @@ def userProfile(request):
         'orders':orders,
     }
     return render(request, 'accounts/user.html', context)
+
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['customer'])
+def accountSetting(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+            
+    context = {'form':form}
+    return render(request, 'accounts/account_setting.html', context)
 
 @login_required(login_url='login')
 @admin_only
