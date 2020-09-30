@@ -7,6 +7,7 @@ from django.forms import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import Group
 
 # Create your views here.
 from .models import *
@@ -24,7 +25,10 @@ def registerPage(request):
         form = CreateUserForm(request.POST or None)
         if form.is_valid():
             userform = form.save(commit=False)
-            user = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')
+
+            
+
             email = form.cleaned_data.get('email')
             qs = User.objects.filter(email=email)
             if qs.exists():
@@ -32,7 +36,13 @@ def registerPage(request):
                 return redirect('register')
             else:
                 userform.save()
-                messages.success(request, user + ' Account create successful')
+
+                group = Group.objects.get(name='customer')
+                userform.groups.add(group)
+                Customer.objects.create(
+                    user=userform,
+                )
+                messages.success(request, username + ' Account create successful')
                 return redirect('login')
     return render(request, 'accounts/register.html', context)
 
@@ -55,9 +65,22 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['customer'])
 def userProfile(request):
-    context = {}
+    orders = request.user.customer.order_set.all()
+
+    total_orders = orders.count()
+    order_delivered = orders.filter(statur='Delivered').count()
+    order_pending = orders.filter(statur='Pending').count()
+    order_cancels = orders.filter(statur='Canceled Order').count()
+    context = {
+        'total_orders':total_orders,
+        'order_delivered':order_delivered,
+        'order_pending':order_pending,
+        'order_cancels':order_cancels,
+        'orders':orders,
+    }
     return render(request, 'accounts/user.html', context)
 
 @login_required(login_url='login')
