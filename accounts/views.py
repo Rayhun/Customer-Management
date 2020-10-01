@@ -36,12 +36,6 @@ def registerPage(request):
                 return redirect('register')
             else:
                 userform.save()
-
-                group = Group.objects.get(name='customer')
-                userform.groups.add(group)
-                Customer.objects.create(
-                    user=userform,
-                )
                 messages.success(request, username + ' Account create successful')
                 return redirect('login')
     return render(request, 'accounts/register.html', context)
