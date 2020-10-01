@@ -38,7 +38,7 @@ def registerPage(request):
                 userform.save()
                 messages.success(request, username + ' Account create successful')
                 return redirect('login')
-    return render(request, 'accounts/register.html', context)
+    return render(request, 'accounts/register.html', context) 
 
 
 @unauthenticated_user

@@ -130,3 +130,11 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+#  SMTP Configuration
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '5e4ef67b3dcc95'
+EMAIL_HOST_PASSWORD = 'fdf9e1d0c21000'
+EMAIL_PORT = '2525'
