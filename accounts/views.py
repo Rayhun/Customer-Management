@@ -178,3 +178,6 @@ def deleteOrder(request, pk):
         return redirect('/')
     context = {'form':order}
     return render(request, 'accounts/delete.html', context)
+
+def error_404_view(request, exception):
+    return render(request, 'accounts/404.html')

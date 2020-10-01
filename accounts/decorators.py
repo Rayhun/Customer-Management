@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -35,7 +35,8 @@ def admin_only(view_func):
         elif group == 'admin':
             return view_func(request, *args, **kwargs)
         else:
-            return HttpResponse("<h1 style= 'color:red; font-size:50px; text-align:center; background:gray; padding: 270px 0;'>401 You are not authenticated</h1>")
+            context = {}
+            return render(request, 'accounts/customer_not_auth.html', context) 
     return wrapper_func
 
 
