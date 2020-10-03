@@ -125,7 +125,8 @@ def products(request):
 @allowed_user(allowed_roles=['admin'])
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
-    orders = customer.order_set.all()
+    # orders = customer.order_set.all()
+    orders = customer.customer_orders
     orders_count = orders.count()
 
     myFilter = OrderFilter(request.GET, queryset=orders)
@@ -143,18 +144,35 @@ def customer(request, pk):
 @login_required(login_url='login')
 @allowed_user(allowed_roles=['admin'])
 def createOrder(request, pk): 
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product','statur','note'))
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product','statur','note','order_content'))
     customer = Customer.objects.get(pk=pk)
     formset= OrderFormSet(instance=customer)
-    # form = OrderForm(initial={'customer':customer})
     if request.method == 'POST':
-        # form = OrderForm(request.POST)
         formset= OrderFormSet(request.POST, instance=customer)
         if formset.is_valid():
             formset.save()
             return redirect('/')
     context = {'formset':formset}
     return render(request, 'accounts/order_form.html', context)
+
+
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
+def createCustomer(request):
+    if request.method == 'GET':
+        form = CustomerForm()
+        context = {'form':form}
+        return render(request, 'accounts/create_customer.html', context)
+    else:
+        form = CustomerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Customer created successfully')
+            return redirect('home')
+        else:
+            context = {'form':form}
+            return render(request, 'accounts/create_customer.html', context)
+
 
 @login_required(login_url='login')
 @allowed_user(allowed_roles=['admin'])

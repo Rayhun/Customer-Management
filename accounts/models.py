@@ -44,11 +44,13 @@ class Order(models.Model):
         ('Canceled Order','Canceled Order'),
         ('Delivered','Delivered')
         )
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
-    Product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL, related_name='customer_orders')
+    Product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL, related_name='product_orders')
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     statur = models.CharField(max_length=200, null=True, choices=STATUS)
     note = models.CharField(max_length=200, null=True)
+    order_content = models.DecimalField(max_digits= 10000, null=True, decimal_places=0)
+
 
     def __str__(self):
         return str(self.customer)

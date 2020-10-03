@@ -9,7 +9,7 @@ from .models import *
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ['name','phone','email']
         exclude = ['user']
 
 class OrderForm(ModelForm):

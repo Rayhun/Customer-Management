@@ -19,7 +19,8 @@ def allowed_user(allowed_roles=[]):
             if group in allowed_roles:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponse("You are not authorize to view this page")
+                context = {}
+                return render(request, 'accounts/customer_not_auth.html', context)
         return wrapper_func
     return decorator
 
