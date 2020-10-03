@@ -159,19 +159,15 @@ def createOrder(request, pk):
 @login_required(login_url='login')
 @allowed_user(allowed_roles=['admin'])
 def createCustomer(request):
-    if request.method == 'GET':
-        form = CustomerForm()
-        context = {'form':form}
-        return render(request, 'accounts/create_customer.html', context)
-    else:
-        form = CustomerForm(request.POST, request.FILES)
+    if request.method == "POST":
+        form = CustomerForm(request.POST or None)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Customer created successfully')
             return redirect('home')
-        else:
-            context = {'form':form}
-            return render(request, 'accounts/create_customer.html', context)
+    else:
+        form = CustomerForm(request.POST or None)
+        context = {'form':form}
+        return render(request, 'accounts/create_customer.html', context)
 
 
 @login_required(login_url='login')

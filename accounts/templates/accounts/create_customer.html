@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title text-center">Customer creation form</h3>
-                    <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                    <form action="" method="POST" novalidate>
                         {% csrf_token %}
                         {{ form|crispy  }}
                         <input class="btn btn-secondary btn-block" type="submit" value="Create User"> 
