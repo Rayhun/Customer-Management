@@ -9,4 +9,5 @@
 6. Migrate Database `python manage.py migrate`
 7. Create Super User `python manage.py createsuperuser`
 8. Finally Run The Project `python manage.py runserver`
-[![](https://github.com/Rayhun/Customer-Management.git/docs/CMS.png)]
+
+![1](https://github.com/Rayhun/Customer-Management/blob/master/docs/CMS.png)
