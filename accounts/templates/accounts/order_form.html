@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid py-5">
     <form action="" method="POST">
         {% csrf_token %}
         {{ formset.management_form }}
@@ -10,7 +10,7 @@
             {{ form }}
             <hr>
         {% endfor %}
-        <input type="submit" name="Submit">
+        <input type="submit" name="Update">
     </form>
 </div>
 {% endblock %}

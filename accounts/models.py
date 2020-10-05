@@ -44,8 +44,8 @@ class Order(models.Model):
         ('Canceled Order','Canceled Order'),
         ('Delivered','Delivered')
         )
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL, related_name='customer_orders')
-    Product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL, related_name='product_orders')
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    Product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     statur = models.CharField(max_length=200, null=True, choices=STATUS)
     note = models.CharField(max_length=200, null=True)
