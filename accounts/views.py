@@ -158,7 +158,6 @@ def order_delivery_list(request):
     total_orders = orders.count()
     order_delivered = orders.filter(statur='Delivered').count()
     order_deliver = orders.filter(statur='Delivered')
-    print(order_deliver)
     order_pending = orders.filter(statur='Pending').count()
     order_cancels = orders.filter(statur='Canceled Order').count()
     context = {
@@ -170,6 +169,25 @@ def order_delivery_list(request):
     }
 
     return render(request, 'accounts/order_delivery_list.html',context)
+
+@login_required
+@admin_only
+def order_pending_list(request):
+    orders = Order.objects.all()
+    total_orders = orders.count()
+    order_delivered = orders.filter(statur='Delivered').count()
+    order_pending = orders.filter(statur='Pending').count()
+    order_pendings = orders.filter(statur='Pending')
+    order_cancels = orders.filter(statur='Canceled Order').count()
+    context = {
+        'order_pendings':order_pendings,
+        'total_orders':total_orders,
+        'order_delivered':order_delivered,
+        'order_pending':order_pending,
+        'order_cancels':order_cancels,
+    }
+
+    return render(request, 'accounts/order_pending_list.html',context)
 
 
 @login_required(login_url='login')

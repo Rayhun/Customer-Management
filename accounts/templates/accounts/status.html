@@ -37,15 +37,17 @@
     </div>
     <div class="col">
         <div class="col-md">
-            <div class="card text-center text-whith mb-3 bg-warning" id="order-rending">
-                <div class="care-header">
-                    <h5 class="card-title-status">Order Pending </h5>
-                    <hr>
+            <a href="{% url 'order_pending_list' %}">
+                <div class="card text-center text-whith mb-3 bg-warning" id="order-rending">
+                    <div class="care-header">
+                        <h5 class="card-title-status">Order Pending </h5>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title-status">{{ order_pending }}</h3>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-title-status">{{ order_pending }}</h3>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="col">
