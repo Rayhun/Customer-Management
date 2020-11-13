@@ -114,6 +114,27 @@ def home(request):
 
     return render(request, 'accounts/dashbord.html',context)
 
+
+@login_required
+@admin_only
+def all_customer(request):
+    orders = Order.objects.all()
+    customers = Customer.objects.all()
+    total_orders = orders.count()
+    order_delivered = orders.filter(statur='Delivered').count()
+    order_pending = orders.filter(statur='Pending').count()
+    order_cancels = orders.filter(statur='Canceled Order').count()
+    context = {
+        'total_orders':total_orders,
+        'order_delivered':order_delivered,
+        'order_pending':order_pending,
+        'order_cancels':order_cancels,
+        'customers':customers
+    }
+
+
+    return render(request, 'accounts/customer_list.html',context)
+
 @login_required(login_url='login')
 def products(request):
     product = Product.objects.all()

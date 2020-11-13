@@ -1,0 +1,29 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    {% include 'accounts/status.html' %}
+    <div class="row">
+        <div class="col-md-11 m-auto">
+            <h5 class="text-center">CUSTOMERS:</h5>
+            <hr>
+            <div class="card card-body">
+                <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_customer' %}">Creat Coustomer</a>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Mobile No:</th>
+                    </tr>
+                    {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.phone }}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'customer' customer.pk %}">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
