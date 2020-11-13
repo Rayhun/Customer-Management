@@ -8,6 +8,7 @@
             <h5 class="text-center">TOTAL ORDERS:</h5>
             <hr>
             <div class="card card-body">
+                {% if orders %}
                 <table class="table table-sm">
                     <tr>
                         <th>Customer</th>
@@ -30,6 +31,9 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {% else %}
+                    <h3 class="h3 text-center py-3 text-danger">Order Not Found</h3>
+                {% endif %}
             </div>
         </div>
     </div>
