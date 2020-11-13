@@ -131,9 +131,25 @@ def all_customer(request):
         'order_cancels':order_cancels,
         'customers':customers
     }
-
-
     return render(request, 'accounts/customer_list.html',context)
+
+@login_required
+@admin_only
+def order_list(request):
+    orders = Order.objects.all()
+    total_orders = orders.count()
+    order_delivered = orders.filter(statur='Delivered').count()
+    order_pending = orders.filter(statur='Pending').count()
+    order_cancels = orders.filter(statur='Canceled Order').count()
+    context = {
+        'orders':orders,
+        'total_orders':total_orders,
+        'order_delivered':order_delivered,
+        'order_pending':order_pending,
+        'order_cancels':order_cancels,
+    }
+
+    return render(request, 'accounts/order_list.html',context)
 
 @login_required(login_url='login')
 def products(request):
