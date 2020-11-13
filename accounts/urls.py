@@ -15,6 +15,7 @@ urlpatterns = [
     path('', views.home, name = "home"),
     path('all/customer', views.all_customer, name = "customer_list_all"),
     path('all/orders', views.order_list, name = "order_list"),
+    path('all/orders/delivery', views.order_delivery_list, name = "order_delivery_list"),
     path('products/', views.products, name="products"),
     path('customer/<int:pk>', views.customer, name="customer"),
     path('create_customer/', views.createCustomer, name="create_customer"),

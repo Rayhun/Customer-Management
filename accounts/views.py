@@ -151,6 +151,27 @@ def order_list(request):
 
     return render(request, 'accounts/order_list.html',context)
 
+@login_required
+@admin_only
+def order_delivery_list(request):
+    orders = Order.objects.all()
+    total_orders = orders.count()
+    order_delivered = orders.filter(statur='Delivered').count()
+    order_deliver = orders.filter(statur='Delivered')
+    print(order_deliver)
+    order_pending = orders.filter(statur='Pending').count()
+    order_cancels = orders.filter(statur='Canceled Order').count()
+    context = {
+        'order_deliver':order_deliver,
+        'total_orders':total_orders,
+        'order_delivered':order_delivered,
+        'order_pending':order_pending,
+        'order_cancels':order_cancels,
+    }
+
+    return render(request, 'accounts/order_delivery_list.html',context)
+
+
 @login_required(login_url='login')
 def products(request):
     product = Product.objects.all()
@@ -163,6 +184,7 @@ def products(request):
 @allowed_user(allowed_roles=['admin'])
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
+    print(customer)
     orders = customer.order_set.all()
     orders_count = orders.count()
 
@@ -227,7 +249,10 @@ def deleteOrder(request, pk):
     if request.method == "POST":
         order.delete()
         return redirect('/')
-    context = {'form':order}
+
+    context = {
+        'form':order,
+        }
     return render(request, 'accounts/delete.html', context)
 
 def error_404_view(request, exception):

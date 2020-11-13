@@ -1,25 +1,27 @@
 {% extends 'accounts/main.html' %}
 {% block content %}
 {% include 'accounts/status.html' %}
-    <div class="row">
-        <div class="col-md">
-            <div class="card card-body">
-                <table class="table table-sm">
-                    <tr>
-                        <th>Product</th>
-                        <th>Note</th>
-                        <th>Data Orderd</th>
-                        <th>Status</th>
-                    </tr>
-                    {% for order in orders %}
-                    <tr>
-                        <td>{{ order.Product }}</td>
-                        <td>{{ order.note }}</td>
-                        <td>{{ order.date_created }}</td>
-                        <td>{{ order.statur }}</td>
-                    </tr>
-                    {% endfor %}
-            </table>
+    <div class="container-fluid">
+        <div class="row py-5">
+            <div class="col-md">
+                <div class="card card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Product</th>
+                            <th>Note</th>
+                            <th>Data Orderd</th>
+                            <th>Status</th>
+                        </tr>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.Product }}</td>
+                            <td>{{ order.note }}</td>
+                            <td>{{ order.date_created }}</td>
+                            <td>{{ order.statur }}</td>
+                        </tr>
+                        {% endfor %}
+                </table>
+                </div>
             </div>
         </div>
     </div>

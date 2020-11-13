@@ -14,13 +14,17 @@
         h1{
             text-align: center;
             background: #67f3f1;
-            padding: 290px 0;
+            padding: 255px 0;
             color: rgb(226, 28, 28);
         }
     </style>
 </head>
 <body>
-    <h1>You are not Verified customer <a href="{% url 'logout' %}">LogOut</a></h1>
+    <h1>You are not Verified customer <br><br>
+        <a class="bg-primary text-white py-2 px-3" href="{% url 'logout' %}">LogOut</a>
+        <a class="bg-primary text-white py-2 px-3" href="{% url 'home' %}">Go to Home</a>
+    </h1>
+    
 </body>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </html>
