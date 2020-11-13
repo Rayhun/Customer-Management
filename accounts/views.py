@@ -95,16 +95,17 @@ def accountSetting(request):
 @admin_only
 def home(request):
     orders = Order.objects.all()
+    last_five = orders.order_by('-date_created')[0:5]
     customers = Customer.objects.all()
-    total_customers = customers.count()
+
+    last_five_customer = customers.order_by('-date_created')[:5]
     total_orders = orders.count()
     order_delivered = orders.filter(statur='Delivered').count()
     order_pending = orders.filter(statur='Pending').count()
     order_cancels = orders.filter(statur='Canceled Order').count()
     context = {
-        'orders':orders,
-        'customers':customers,
-        # 'total_customers':total_customers,
+        'last_five':last_five,
+        'last_five_customer':last_five_customer,
         'total_orders':total_orders,
         'order_delivered':order_delivered,
         'order_pending':order_pending,
