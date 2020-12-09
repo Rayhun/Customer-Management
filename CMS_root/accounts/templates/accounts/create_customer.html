@@ -1,0 +1,22 @@
+{% extends 'accounts/main.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Customer creation form</h3>
+                    <form action="" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy  }}
+                        <input class="btn btn-secondary btn-block" type="submit" value="Create User"> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

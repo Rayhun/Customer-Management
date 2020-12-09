@@ -1,0 +1,41 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    {% include 'accounts/status.html' %}
+    <div class="row">
+        <div class="col-md-11 m-auto">
+            <h5 class="text-center">TOTAL ORDERS:</h5>
+            <hr>
+            <div class="card card-body">
+                {% if order_pendings %}
+                <table class="table table-sm">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Date Order</th>
+                        <th>Status</th>
+                        <th>QTY</th>
+                        <th>Update</th>
+                        <th>Remove</th>
+                    </tr>
+                    {% for order in order_pendings %}
+                    <tr>
+                        <td>{{ order.customer }}</td>
+                        <td>{{ order.Product }}</td>
+                        <td>{{ order.date_created }}</td>
+                        <td>{{ order.statur }}</td>
+                        <td>{{ order.order_content }}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'update_order' order.pk %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_order' order.pk %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    <h3 class="h3 text-center py-3 text-danger">Pending order not found</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
