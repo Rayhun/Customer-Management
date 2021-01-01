@@ -97,7 +97,6 @@ def home(request):
     orders = Order.objects.all()
     last_five = orders.order_by('-date_created')[0:5]
     customers = Customer.objects.all()
-
     last_five_customer = customers.order_by('-date_created')[:5]
     total_orders = orders.count()
     order_delivered = orders.filter(statur='Delivered').count()
@@ -223,7 +222,6 @@ def products(request):
 @allowed_user(allowed_roles=['admin'])
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
-    print(customer)
     orders = customer.order_set.all()
     orders_count = orders.count()
 
