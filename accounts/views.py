@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import Group
+from django.views.generic import View
 
 # Create your views here.
 from .models import *
@@ -15,20 +16,19 @@ from .filter import OrderFilter
 from .form import OrderForm, CreateUserForm,CustomerForm
 from .decorators import unauthenticated_user, allowed_user, admin_only
 
-@unauthenticated_user
-def registerPage(request):
-    form = CreateUserForm(request.POST or None)
-    context = {
-        'form':form
-    }
-    if request.method == 'POST':
+# @unauthenticated_user
+class RegisterPage(View):
+    def get(self, request):
+        form = CreateUserForm(request.POST or None)
+        context = {
+            'form':form
+        }
+        return render(request, 'accounts/register.html', context)
+    def post(self, request):
         form = CreateUserForm(request.POST or None)
         if form.is_valid():
             userform = form.save(commit=False)
             username = form.cleaned_data.get('username')
-
-            
-
             email = form.cleaned_data.get('email')
             qs = User.objects.filter(email=email)
             if qs.exists():
@@ -36,9 +36,11 @@ def registerPage(request):
                 return redirect('register')
             else:
                 userform.save()
-                messages.success(request, username + ' Account create successful')
+                messages.success(
+                    request, username + ' Account create successful'
+                )
                 return redirect('login')
-    return render(request, 'accounts/register.html', context) 
+        return render(request, 'accounts/register.html', context) 
 
 
 @unauthenticated_user
@@ -240,7 +242,9 @@ def customer(request, pk):
 @login_required(login_url='login')
 @allowed_user(allowed_roles=['admin'])
 def createOrder(request, pk): 
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product','statur','note','order_content'))
+    OrderFormSet = inlineformset_factory(
+        Customer, Order, fields=('Product','statur','note','order_content')
+    )
     customer = Customer.objects.get(pk=pk)
     formset= OrderFormSet(instance=customer)
     if request.method == 'POST':
