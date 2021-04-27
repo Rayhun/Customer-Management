@@ -16,15 +16,13 @@ from .filter import OrderFilter
 from .form import OrderForm, CreateUserForm,CustomerForm
 from .decorators import unauthenticated_user, allowed_user, admin_only
 
-# @unauthenticated_user
-class RegisterPage(View):
-    def get(self, request):
-        form = CreateUserForm(request.POST or None)
-        context = {
-            'form':form
-        }
-        return render(request, 'accounts/register.html', context)
-    def post(self, request):
+@unauthenticated_user
+def registerPage(request):
+    form = CreateUserForm(request.POST or None)
+    context = {
+        'form':form
+    }
+    if request.method == "POST":
         form = CreateUserForm(request.POST or None)
         if form.is_valid():
             userform = form.save(commit=False)
