@@ -22,6 +22,7 @@ def registerPage(request):
     context = {
         'form':form
     }
+    return render(request, 'accounts/register.html', context) 
     if request.method == "POST":
         form = CreateUserForm(request.POST or None)
         if form.is_valid():
@@ -38,6 +39,9 @@ def registerPage(request):
                     request, username + ' Account create successful'
                 )
                 return redirect('login')
+        context = {
+            'form':form
+        }
         return render(request, 'accounts/register.html', context) 
 
 
