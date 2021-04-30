@@ -16,16 +16,21 @@ from .filter import OrderFilter
 from .form import OrderForm, CreateUserForm,CustomerForm
 from .decorators import unauthenticated_user, allowed_user, admin_only
 
-
+@unauthenticated_user
 def registerPage(request):
+    form = CreateUserForm(request.POST or None)
+    context = {
+        'form':form
+    }
+    return render(request, 'accounts/register.html', context) 
     if request.method == "POST":
         form = CreateUserForm(request.POST or None)
         if form.is_valid():
             userform = form.save(commit=False)
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
-            user = User.objects.filter(email=email)
-            if user.exists():
+            qs = User.objects.filter(email=email)
+            if qs.exists():
                 messages.error(request, 'Email Already Exists')
                 return redirect('register')
             else:
@@ -38,13 +43,9 @@ def registerPage(request):
             'form':form
         }
         return render(request, 'accounts/register.html', context) 
-    else:
-        form = CreateUserForm(request.POST or None)
-        context = {
-            'form':form
-        }
-        return render(request, 'accounts/register.html', context) 
 
+
+@unauthenticated_user
 def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -62,6 +63,8 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['customer'])
 def userProfile(request):
     orders = request.user.customer.order_set.all()
 
@@ -78,7 +81,8 @@ def userProfile(request):
     }
     return render(request, 'accounts/user.html', context)
 
-
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['customer'])
 def accountSetting(request):
     customer = request.user.customer
     form = CustomerForm(instance=customer)
@@ -91,7 +95,8 @@ def accountSetting(request):
     context = {'form':form}
     return render(request, 'accounts/account_setting.html', context)
 
-
+@login_required(login_url='login')
+@admin_only
 def home(request):
     orders = Order.objects.all()
     last_five = orders.order_by('-date_created')[0:5]
@@ -113,7 +118,8 @@ def home(request):
     return render(request, 'accounts/dashbord.html',context)
 
 
-
+@login_required
+@admin_only
 def all_customer(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -130,7 +136,8 @@ def all_customer(request):
     }
     return render(request, 'accounts/customer_list.html',context)
 
-
+@login_required
+@admin_only
 def order_list(request):
     orders = Order.objects.all()
     total_orders = orders.count()
@@ -147,6 +154,8 @@ def order_list(request):
 
     return render(request, 'accounts/order_list.html',context)
 
+@login_required
+@admin_only
 def order_delivery_list(request):
     orders = Order.objects.all()
     total_orders = orders.count()
@@ -164,7 +173,8 @@ def order_delivery_list(request):
 
     return render(request, 'accounts/order_delivery_list.html',context)
 
-
+@login_required
+@admin_only
 def order_pending_list(request):
     orders = Order.objects.all()
     total_orders = orders.count()
@@ -183,6 +193,9 @@ def order_pending_list(request):
     return render(request, 'accounts/order_pending_list.html',context)
 
 
+
+@login_required
+@admin_only
 def order_canceled_list(request):
     orders = Order.objects.all()
     total_orders = orders.count()
@@ -201,6 +214,7 @@ def order_canceled_list(request):
     return render(request, 'accounts/order_canceled_list.html',context)
 
 
+@login_required(login_url='login')
 def products(request):
     product = Product.objects.all()
     context = {
@@ -208,6 +222,8 @@ def products(request):
     }
     return render(request, 'accounts/product.html', context)
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     orders = customer.order_set.all()
@@ -225,7 +241,8 @@ def customer(request, pk):
     return render(request, 'accounts/customer.html',context)
 
 
-
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def createOrder(request, pk): 
     OrderFormSet = inlineformset_factory(
         Customer, Order, fields=('Product','statur','note','order_content')
@@ -240,6 +257,9 @@ def createOrder(request, pk):
     context = {'formset':formset}
     return render(request, 'accounts/order_form.html', context)
 
+
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def createCustomer(request):
     if request.method == "POST":
         form = CustomerForm(request.POST or None)
@@ -251,6 +271,9 @@ def createCustomer(request):
         context = {'form':form}
         return render(request, 'accounts/create_customer.html', context)
 
+
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def updateOrder(request, pk):
     order = Order.objects.get(pk=pk)
     formset = OrderForm(instance=order)
@@ -262,7 +285,8 @@ def updateOrder(request, pk):
     context = {'formset':formset}
     return render(request, 'accounts/order_form.html', context)
 
-
+@login_required(login_url='login')
+@allowed_user(allowed_roles=['admin'])
 def deleteOrder(request, pk):
     order = Order.objects.get(pk=pk)
     if request.method == "POST":
