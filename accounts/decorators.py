@@ -1,48 +1,40 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+# from django.http import HttpResponse
+# from django.shortcuts import redirect, render
 
-def unauthenticated_user(view_func):
-    def wrapper_func(request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home')
-        else:
-            return view_func(request, *args, **kwargs)
-    return wrapper_func
+# def unauthenticated_user(view_func):
+#     def wrapper_func(request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return redirect('home')
+#         else:
+#             return view_func(request, *args, **kwargs)
+#     return wrapper_func
 
-def allowed_user(allowed_roles=[]):
-    def decorator(view_func):
-        def wrapper_func(request, *args, **kwargs):
-            group = None
-            if request.user.groups.exists():
-                group = request.user.groups.all()[0].name
+# def allowed_user(allowed_roles=[]):
+#     def decorator(view_func):
+#         def wrapper_func(request, *args, **kwargs):
+#             group = None
+#             if request.user.groups.exists():
+#                 group = request.user.groups.all()[0].name
             
-            if group in allowed_roles:
-                return view_func(request, *args, **kwargs)
-            else:
-                context = {}
-                return render(request, 'accounts/customer_not_auth.html', context)
-        return wrapper_func
-    return decorator
+#             if group in allowed_roles:
+#                 return view_func(request, *args, **kwargs)
+#             else:
+#                 return render(request, 'accounts/customer_not_auth.html')
+#         return wrapper_func
+#     return decorator
 
-def admin_only(view_func):
-    def wrapper_func(request, *args, **kwargs):
-        group = None
-        if request.user.groups.exists():
-            group = request.user.groups.all()[0].name
+# def admin_only(view_func):
+#     def wrapper_func(request, *args, **kwargs):
+#         group = None
+#         if request.user.groups.exists():
+#             group = request.user.groups.all()[0].name
 
-        if group == 'customer':
-            return redirect('user_profile')
+#         if group == 'customer':
+#             return redirect('user_profile')
 
-        elif group == 'admin':
-            return view_func(request, *args, **kwargs)
-        else:
-            context = {}
-            return render(request, 'accounts/customer_not_auth.html', context) 
-    return wrapper_func
-
-
-
-
-
-
+#         elif group == 'admin':
+#             return view_func(request, *args, **kwargs)
+#         else:
+#             return render(request, 'accounts/customer_not_auth.html') 
+#     return wrapper_func
 
